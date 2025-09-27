@@ -2,6 +2,7 @@
   "name": "webwizard",
   "version": "0.1.0",
   "private": true,
+  "type": "module", 
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
@@ -45,6 +46,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "license": "ISC"
 }
