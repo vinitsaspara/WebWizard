@@ -15,10 +15,44 @@ datasource db {
 }
 
 model User {
+  id           Int        @id @default(autoincrement())
+  userId       String     @unique   // unique username/roll no/emp code
+  name         String
+  email        String     @unique
+  password     String
+  role         Role
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId Int?
+  profile      Profile?
+  createdBy    Int?        // id of the user who created this account
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Profile {
   id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     String?
+  dob       DateTime?
+  address   String?
+  semester  Int?     // for students
+  updatedAt DateTime @updatedAt
+}
+
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique // DCS, DCE, DIT
+  users     User[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  PRINCIPAL
+  HOD
+  DEPARTMENT_COORDINATOR
+  PROFESSOR
+  STUDENT
 }

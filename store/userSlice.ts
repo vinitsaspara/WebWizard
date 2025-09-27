@@ -1,33 +1,35 @@
+// store/userSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
   id: string;
-  name: string;
-  email: string;
-  isLoggedIn: boolean;
+  role: string;
+  department?: string;
+  token: string | null;
 }
 
 const initialState: UserState = {
   id: "",
-  name: "",
-  email: "",
-  isLoggedIn: false,
+  role: "",
+  department: "",
+  token: null,
 };
 
-const userSlice = createSlice({
-  name: "user", 
+export const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<Omit<UserState, "isLoggedIn">>) => {
-      // Merge payload into state
-      Object.assign(state, action.payload);
-      state.isLoggedIn = true;
+    setUser: (state, action: PayloadAction<UserState>) => {
+      state.id = action.payload.id;
+      state.role = action.payload.role;
+      state.department = action.payload.department || "";
+      state.token = action.payload.token;
     },
     clearUser: (state) => {
       state.id = "";
-      state.name = "";
-      state.email = "";
-      state.isLoggedIn = false;
+      state.role = "";
+      state.department = "";
+      state.token = null;
     },
   },
 });

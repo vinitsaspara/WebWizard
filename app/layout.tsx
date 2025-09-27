@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import ReduxProvider from "@/components/ReduxProvider";
+import Providers from "@/components/Providers"; // hydration-safe wrapper
+import { NavLayout } from "@/components/NavLayout";
+import { AuthGuard } from "@/components/AuthGuard";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,10 +31,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-gray-900 dark:text-white`}
       >
-        <ReduxProvider>{children}</ReduxProvider>
-        <Toaster />
+        <Providers>
+          <ReduxProvider>
+            <ErrorBoundary>
+              <AuthGuard>
+                <NavLayout>{children}</NavLayout>
+              </AuthGuard>
+            </ErrorBoundary>
+            <Toaster />
+          </ReduxProvider>
+        </Providers>
       </body>
     </html>
   );
